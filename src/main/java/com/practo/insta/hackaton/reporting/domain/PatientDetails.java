@@ -1,5 +1,9 @@
 package com.practo.insta.hackaton.reporting.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.practo.insta.hackaton.reporting.util.LocalDateTimeDeserializer;
+import com.practo.insta.hackaton.reporting.util.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,5 +31,7 @@ public class PatientDetails {
 
     protected Patient patient;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     protected LocalDateTime registrationDateTime;
 }

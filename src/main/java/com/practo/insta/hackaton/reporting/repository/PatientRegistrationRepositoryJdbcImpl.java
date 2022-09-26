@@ -25,8 +25,8 @@ public class PatientRegistrationRepositoryJdbcImpl implements PatientRegistratio
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("fromDate", fromDate)
                 .addValue("toDate", toDate);
-        ArrayList<PatientDetails> patientDetailsArrayList = namedParameterJdbcTemplate.queryForObject(GET_PATIENT_REGISTRATIONS_FOR_WINDOW, params,
-                (rs, rowNum) -> Lists.newArrayList(new PatientDetails(
+        List<PatientDetails> patientDetails = namedParameterJdbcTemplate.query(GET_PATIENT_REGISTRATIONS_FOR_WINDOW, params,
+                (rs, rowNum) -> new PatientDetails(
                         rs.getString("mr_no"),
                         rs.getString("patient_id"),
                         "OP",
@@ -36,7 +36,7 @@ public class PatientRegistrationRepositoryJdbcImpl implements PatientRegistratio
                         new Center("CENT001", "Center 1"),
                         new Patient("PAT0001", "Neeraj Gupta", 31),
                         LocalDateTime.of(rs.getDate("reg_date").toLocalDate(), rs.getTime("reg_time").toLocalTime())
-                )));
-        return patientDetailsArrayList;
+                ));
+        return patientDetails;
     }
 }
