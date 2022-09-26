@@ -44,8 +44,8 @@
 ### Preparing Data
 
 1. Creating the index for the required entity. Eg
-``PUT /test-00001``
-```
+`PUT /test-00001`
+`
    {
    "mappings": {
    "properties": {
@@ -114,5 +114,26 @@
    }
    }
    }
-``
-2. Make the curl Call for the API to load the date for past one month
+`
+2. Make the curl Call for the API to load the date for past one month -
+3. `curl -X POST http://localhost:8051/v1/reports/patient-registration \
+   -H 'Content-Type: application/json' \
+   -d '{
+   "from_datetime": "2021-01-01T00:00",
+   "to_datetime": "2022-10-08T00:00"
+   }'`
+
+
+### References 
+- https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html
+- https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/7.17/connecting.html
+- https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/7.17/installation.html
+- https://www.elastic.co/guide/en/cloud/current/ec-ingest-guides.html
+- https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/7.17/indexing-bulk.html
+- https://www.elastic.co/guide/en/elasticsearch/reference/8.4/date.html
+- https://www.elastic.co/guide/en/elasticsearch/reference/8.4/keyword.html
+- https://www.elastic.co/guide/en/elasticsearch/reference/8.4/text.html
+- http://localhost:5601/app/discover
+- http://localhost:5601/app/dev_tools#/console
+- http://localhost:5601/app/management/data/index_management/indices
+- http://localhost:5601/app/management/kibana/indexPatterns
