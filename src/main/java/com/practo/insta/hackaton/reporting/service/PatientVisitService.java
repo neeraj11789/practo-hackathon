@@ -42,7 +42,7 @@ public class PatientVisitService {
         br.operations(op -> op
                 .index(idx -> idx
                         .index("patient-registration-001")
-                        .id(patientVisit.getMrNo())
+                        .id(patientVisit.getVisitId())
                         .document(patientVisit)
                 )
         );
