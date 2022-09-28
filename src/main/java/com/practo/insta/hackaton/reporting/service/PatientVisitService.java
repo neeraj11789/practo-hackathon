@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,41 +27,15 @@ public class PatientVisitService {
     @Autowired
     private PatientVisitRepository repository;
 
+    @Value("${elasticsearch.index.name.patient_visit}")
+    private String patientVisitElasticIndexName;
+
+    @Autowired
+    private ElasticSearchService elasticsearchService;
+
     public List<PatientVisit> index(final LocalDateTime fromDateTime, final LocalDateTime toDateTime, final Boolean updateExistingRecords) {
         List<PatientVisit> patientRegistrationsForTimeline = repository.getPatientRegistrationsForTimeline(fromDateTime.toLocalDate(), toDateTime.toLocalDate());
-
-    // Create the low-level client
-    RestClient restClient = RestClient.builder(new HttpHost("localhost", 9200)).build();
-    // Create the transport with a Jackson mapper
-    ElasticsearchTransport transport = new RestClientTransport(
-            restClient, new JacksonJsonpMapper());
-    // And create the API client
-    ElasticsearchClient client = new ElasticsearchClient(transport);
-
-    BulkRequest.Builder br = new BulkRequest.Builder();
-    patientRegistrationsForTimeline.forEach(patientVisit -> {
-        br.operations(op -> op
-                .index(idx -> idx
-                        .index("patient-registration-001")
-                        .id(patientVisit.getVisitId())
-                        .document(patientVisit)
-                )
-        );
-    });
-    try {
-        BulkResponse result = client.bulk(br.build());
-        // Log errors, if any
-        if (result.errors()) {
-            log.error("Bulk had errors");
-            for (BulkResponseItem item: result.items()) {
-                if (item.error() != null) {
-                    log.error("Index Error: {}", item.error().reason());
-                }
-            }
-        }
-    } catch (IOException e) {
-        log.info("Got the exception:: {}", e.getMessage());
-    }
+        elasticsearchService.bulkIndex(patientRegistrationsForTimeline, patientVisitElasticIndexName);
         return patientRegistrationsForTimeline;
     }
 }
