@@ -8,7 +8,7 @@ import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.practo.insta.hackaton.reporting.domain.PatientVisit;
-import com.practo.insta.hackaton.reporting.repository.PatientRegistrationRepository;
+import com.practo.insta.hackaton.reporting.repository.PatientVisitRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
@@ -21,10 +21,10 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class PatientRegistrationService {
+public class PatientVisitService {
 
     @Autowired
-    private PatientRegistrationRepository repository;
+    private PatientVisitRepository repository;
 
     public List<PatientVisit> index(final LocalDateTime fromDateTime, final LocalDateTime toDateTime, final Boolean updateExistingRecords) {
         List<PatientVisit> patientRegistrationsForTimeline = repository.getPatientRegistrationsForTimeline(fromDateTime.toLocalDate(), toDateTime.toLocalDate());

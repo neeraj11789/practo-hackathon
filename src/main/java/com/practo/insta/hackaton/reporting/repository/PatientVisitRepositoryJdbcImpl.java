@@ -7,14 +7,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.util.List;
 
 @Repository
-public class PatientRegistrationRepositoryJdbcImpl implements PatientRegistrationRepository {
+public class PatientVisitRepositoryJdbcImpl implements PatientVisitRepository {
 
     private static String GET_PATIENT_REGISTRATIONS_FOR_WINDOW = "select * from cen.patient_registration " +
             "where (reg_date between :fromDate  AND :toDate );";

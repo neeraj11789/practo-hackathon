@@ -11,7 +11,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientRegistrationRequestBody {
+public class PatientVisitRequestBody {
 
     @DateTimeFormat(iso = DATE_TIME)
     LocalDateTime fromDatetime;
