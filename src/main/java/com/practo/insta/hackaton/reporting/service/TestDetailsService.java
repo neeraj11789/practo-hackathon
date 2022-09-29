@@ -7,8 +7,8 @@ import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import com.practo.insta.hackaton.reporting.domain.DiagnosisDetails;
-import com.practo.insta.hackaton.reporting.repository.DiagnosisDetailsRepository;
+import com.practo.insta.hackaton.reporting.domain.TestDetails;
+import com.practo.insta.hackaton.reporting.repository.TestDetailsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
@@ -21,13 +21,13 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class DaignosisDetailsService {
+public class TestDetailsService {
 
     @Autowired
-    private DiagnosisDetailsRepository repository;
+    private TestDetailsRepository repository;
 
-    public List<DiagnosisDetails> index(final LocalDateTime fromDateTime, final LocalDateTime toDateTime, final Boolean updateExistingRecords) {
-        List<DiagnosisDetails> patientDiagnosisForTimeline = repository.getPatientDiagnosisForTimeline(fromDateTime.toLocalDate(), toDateTime.toLocalDate());
+    public List<TestDetails> index(final LocalDateTime fromDateTime, final LocalDateTime toDateTime, final Boolean updateExistingRecords) {
+        List<TestDetails> patientTestForTimeline = repository.getPatientTestForTimeline(fromDateTime.toLocalDate(), toDateTime.toLocalDate());
 
         // Create the low-level client
         RestClient restClient = RestClient.builder(new HttpHost("localhost", 9200)).build();
@@ -38,12 +38,12 @@ public class DaignosisDetailsService {
         ElasticsearchClient client = new ElasticsearchClient(transport);
 
         BulkRequest.Builder br = new BulkRequest.Builder();
-        patientDiagnosisForTimeline.forEach(patientDiagnosis -> {
+        patientTestForTimeline.forEach(patientTest -> {
             br.operations(op -> op
                     .index(idx -> idx
-                            .index("patient-diagnosis")
-                            .id(patientDiagnosis.getMrNo())
-                            .document(patientDiagnosis)
+                            .index("patient-test")
+                            .id(patientTest.getVisitId())
+                            .document(patientTest)
                     )
             );
         });
@@ -61,6 +61,6 @@ public class DaignosisDetailsService {
         } catch (IOException e) {
             log.info("Got the exception:: {}", e.getMessage());
         }
-        return patientDiagnosisForTimeline;
+        return patientTestForTimeline;
     }
 }
