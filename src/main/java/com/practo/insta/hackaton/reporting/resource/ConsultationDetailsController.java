@@ -1,6 +1,8 @@
 package com.practo.insta.hackaton.reporting.resource;
 
+import com.practo.insta.hackaton.reporting.domain.ConsultationDetails;
 import com.practo.insta.hackaton.reporting.domain.DiagnosisDetails;
+import com.practo.insta.hackaton.reporting.service.ConsultationDetailsService;
 import com.practo.insta.hackaton.reporting.service.DaignosisDetailsService;
 import com.practo.insta.hackaton.reporting.request.PatientVisitRequestBody;
 import io.swagger.annotations.Api;
@@ -14,17 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/reports/patient-diagnosis")
+@RequestMapping("v1/reports/patient-consultation")
 @Slf4j
-@Api(value = "Patient Diagnosis Report Resource", produces = "application/json")
-public class DiagnosisController {
+@Api(value = "Patient Consultation Report Resource", produces = "application/json")
+public class ConsultationDetailsController {
 
     @Autowired
-    DaignosisDetailsService daignosisDetailsService;
+    ConsultationDetailsService consultationDetailsService;
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    private List<DiagnosisDetails> indexPatients(@RequestBody PatientVisitRequestBody body){
+    private List<ConsultationDetails> indexPatients(@RequestBody PatientVisitRequestBody body) {
         System.out.println(body);
-        return daignosisDetailsService.index(body.getFromDatetime(), body.getToDatetime(), true);
+        return consultationDetailsService.index(body.getFromDatetime(), body.getToDatetime(), true);
     }
 }
