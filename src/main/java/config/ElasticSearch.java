@@ -4,14 +4,17 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class ElasticSearchConfig {
+@Component
+@AllArgsConstructor
+@NoArgsConstructor
+public class ElasticSearch {
 
     @Value("${elasticsearch.host}")
     private String elasticHost;
@@ -19,8 +22,7 @@ public class ElasticSearchConfig {
     @Value("${elasticsearch.port}")
     private Integer elasticPort;
 
-    @Bean
-    public ElasticsearchClient getElasticClient(){
+    public ElasticsearchClient getElasticSearchClient(){
         // Create the low-level client
         RestClient restClient = RestClient.builder(new HttpHost(elasticHost, elasticPort)).build();
         // Create the transport with a Jackson mapper
