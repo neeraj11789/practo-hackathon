@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 
 @Data
 @AllArgsConstructor
-public class PatientVisit {
+public class PatientVisit extends BaseDomain{
 
     protected String mrNo;
 
