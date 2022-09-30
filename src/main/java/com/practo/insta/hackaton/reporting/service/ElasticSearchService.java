@@ -6,7 +6,6 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import com.practo.insta.hackaton.reporting.domain.BaseDomain;
 import com.practo.insta.hackaton.reporting.exception.ElasticIndexException;
-import config.ElasticSearch;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 import static com.practo.insta.hackaton.reporting.util.ExceptionHelper.ELASTIC_INDEX_ERROR;
@@ -26,23 +24,24 @@ import static com.practo.insta.hackaton.reporting.util.ExceptionHelper.ELASTIC_I
 @NoArgsConstructor
 public class ElasticSearchService {
 
-    private ElasticSearch elasticSearch = new ElasticSearch();
 
-    @Bean
+    @Autowired
+    private ElasticsearchClient elasticsearchClient;
+
     public void bulkIndex(List<? extends BaseDomain> documents, final String indexName){
         BulkRequest.Builder br = new BulkRequest.Builder();
         documents.forEach(d -> {
             br.operations(op -> op
                     .index(idx -> idx
                             .index(indexName)
-                            .id(d.getId())
+                            .id(d.getExternalId())
                             .document(d)
                     )
             );
         });
 
         try {
-            BulkResponse result = elasticSearch.getElasticSearchClient().bulk(br.build());
+            BulkResponse result = elasticsearchClient.bulk(br.build());
             // Log errors, if any
             if (result.errors()) {
                 log.error("################# Bulk Index had errors ###################");

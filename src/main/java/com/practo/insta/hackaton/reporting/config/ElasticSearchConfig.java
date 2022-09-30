@@ -1,4 +1,4 @@
-package config;
+package com.practo.insta.hackaton.reporting.config;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
@@ -9,20 +9,18 @@ import lombok.NoArgsConstructor;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 @AllArgsConstructor
-@NoArgsConstructor
-public class ElasticSearch {
-
-    @Value("${elasticsearch.host}")
-    private String elasticHost;
-
-    @Value("${elasticsearch.port}")
-    private Integer elasticPort;
-
-    public ElasticsearchClient getElasticSearchClient(){
+@PropertySource("classpath:application.properties")
+public class ElasticSearchConfig {
+    @Bean
+    public ElasticsearchClient getElasticSearchClient(@Value("${elasticsearch.host}") String elasticHost,
+                                                      @Value("${elasticsearch.port}") Integer elasticPort){
         // Create the low-level client
         RestClient restClient = RestClient.builder(new HttpHost(elasticHost, elasticPort)).build();
         // Create the transport with a Jackson mapper

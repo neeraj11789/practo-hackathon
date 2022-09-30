@@ -1,4 +1,4 @@
-package config;
+package com.practo.insta.hackaton.reporting.config;
 
 
 import com.practo.insta.hackaton.reporting.exception.BaseException;

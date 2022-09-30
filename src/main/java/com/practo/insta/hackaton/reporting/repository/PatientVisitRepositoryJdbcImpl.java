@@ -1,6 +1,7 @@
 package com.practo.insta.hackaton.reporting.repository;
 
 import com.practo.insta.hackaton.reporting.domain.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -49,15 +50,15 @@ public class PatientVisitRepositoryJdbcImpl implements PatientVisitRepository {
             "\tLEFT JOIN patient_category_master pcm ON (pr.patient_category_id = pcm.category_id)\n" +
             "\tLEFT JOIN hospital_center_master hcm ON (pr.center_id = hcm.center_id)\n" +
             "WHERE (pr.reg_date between :fromDate  AND :toDate ) \n" +
-            "AND (pd.mr_no in (SELECT mr_no from user_mrno_association\n" +
-            " WHERE emp_username = current_setting('application.username') OR current_setting('application.username') = '_system') \n" +
-            " or pd.patient_group in \n" +
-            " (SELECT ufa.confidentiality_grp_id as patient_group \n" +
-            " from user_confidentiality_association ufa\n" +
-            " JOIN confidentiality_grp_master cgm\n" +
-            " ON (cgm.confidentiality_grp_id = ufa.confidentiality_grp_id)\n" +
-            "where emp_username = current_setting('application.username')\n" +
-            " AND ufa.status = 'A' and cgm.status = 'A' UNION SELECT 0))\n" +
+//            "AND (pd.mr_no in (SELECT mr_no from user_mrno_association\n" +
+//            " WHERE emp_username = current_setting('application.username') OR current_setting('application.username') = '_system') \n" +
+//            " or pd.patient_group in \n" +
+//            " (SELECT ufa.confidentiality_grp_id as patient_group \n" +
+//            " from user_confidentiality_association ufa\n" +
+//            " JOIN confidentiality_grp_master cgm\n" +
+//            " ON (cgm.confidentiality_grp_id = ufa.confidentiality_grp_id)\n" +
+//            "where emp_username = current_setting('application.username')\n" +
+//            " AND ufa.status = 'A' and cgm.status = 'A' UNION SELECT 0))\n" +
             "ORDER BY pr.reg_date DESC";
 
     @Autowired
@@ -70,6 +71,7 @@ public class PatientVisitRepositoryJdbcImpl implements PatientVisitRepository {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         List<PatientVisit> patientDetails = namedParameterJdbcTemplate.query(GET_PATIENT_REGISTRATIONS_FOR_TIMEFRAME, params,
                 (rs, rowNum) -> new PatientVisit(
+                        StringUtils.isNotBlank(rs.getString("patient_id"))? rs.getString("patient_id") : rs.getString("mr_no"), //id
                         rs.getString("mr_no"),
                         rs.getString("patient_gender"),
                         rs.getString("patient_address"),

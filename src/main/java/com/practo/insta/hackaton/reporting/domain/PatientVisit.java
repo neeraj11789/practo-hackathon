@@ -15,6 +15,8 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 public class PatientVisit extends BaseDomain{
 
+    protected String id;
+
     protected String mrNo;
 
     protected String patientGender;

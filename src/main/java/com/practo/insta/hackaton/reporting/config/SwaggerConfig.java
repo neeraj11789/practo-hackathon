@@ -1,4 +1,4 @@
-package config;
+package com.practo.insta.hackaton.reporting.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
