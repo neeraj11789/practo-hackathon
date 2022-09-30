@@ -3,12 +3,12 @@ package com.practo.insta.hackaton.reporting.resource;
 import com.practo.insta.hackaton.reporting.domain.DiagnosisDetails;
 import com.practo.insta.hackaton.reporting.request.PatientVisitRequestBody;
 import com.practo.insta.hackaton.reporting.service.DaignosisDetailsService;
+import com.practo.insta.hackaton.reporting.request.PatientVisitRequestBody;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

@@ -1,16 +1,13 @@
 package com.practo.insta.hackaton.reporting.repository;
 
-import com.google.common.collect.Lists;
-import com.practo.insta.hackaton.reporting.domain.*;
+import com.practo.insta.hackaton.reporting.domain.DiagnosisDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.w3c.dom.ls.LSInput;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository

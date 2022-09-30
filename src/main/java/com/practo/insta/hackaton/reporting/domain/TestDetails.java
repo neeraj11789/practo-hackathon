@@ -11,43 +11,46 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class DiagnosisDetails {
+public class TestDetails {
 
     protected String mrNo;
 
     protected String visitId;
 
-    protected String description;
+    protected String visitType;
 
-    protected String icdCode;
+    protected String centerId;
 
-    protected String codeType;
+    protected String centerName;
 
-    protected String doctorId;
+    protected String patientGender;
 
-    protected String doctorName;
+    protected String testId;
+
+    protected String testName;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    protected LocalDateTime diagnosisDateTime;
-
-    protected String gender;
-
-    protected String patientName;
-
-    protected String cityName;
-
-    protected String stateName;
+    protected LocalDateTime testDate;
 
     protected String deptId;
 
     protected String deptName;
 
-    protected String specialization;
+    protected String doctorId;
 
-    protected String centerName;
+    protected String doctorName;
 
-    protected Integer centerId;
+    protected String cityId;
 
-    protected String visitType;
+    protected String cityName;
+
+    protected String stateId;
+
+    protected String stateName;
+
+    protected String countryId;
+
+    protected String countryName;
+
 }
