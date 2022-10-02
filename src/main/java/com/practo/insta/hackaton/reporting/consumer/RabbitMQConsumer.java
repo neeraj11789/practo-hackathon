@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@RabbitListener(queues = "rabbitmq.queue", id = "listener")
+@RabbitListener(queues = "${rabbitmq.queue}", id = "listener")
 public class RabbitMQConsumer {
 
     private static Logger logger = LogManager.getLogger(RabbitMQConsumer.class.toString());
