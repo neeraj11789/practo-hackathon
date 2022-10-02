@@ -23,22 +23,26 @@ import static com.practo.insta.hackaton.reporting.util.ExceptionHelper.ELASTIC_I
 @NoArgsConstructor
 public class ElasticSearchService {
 
-
     @Autowired
     private ElasticsearchClient elasticsearchClient;
 
     public void bulkIndex(List<? extends BaseDomain> documents, final String indexName){
-        BulkRequest.Builder br = new BulkRequest.Builder();
-        documents.forEach(d -> {
-            br.operations(op -> op
-                    .index(idx -> idx
-                            .index(indexName)
-                            .id(d.getExternalId())
-                            .document(d)
-                    )
-            );
-        });
 
+        /**
+         * @todo: TO AVOID DUPLICATES: From the list of the documents -
+         * Create the 2 buckets - one for the documents to be updated
+         * &
+         * another bucket for the documents to be inserted
+         * Rename function as bulkUpsert
+         */
+        BulkRequest.Builder br = new BulkRequest.Builder();
+        documents.forEach(d -> br.operations(op -> op
+                .index(idx -> idx
+                        .index(indexName)
+                        .id(d.getExternalId())
+                        .document(d)
+                )
+        ));
         try {
             BulkResponse result = elasticsearchClient.bulk(br.build());
             // Log errors, if any
