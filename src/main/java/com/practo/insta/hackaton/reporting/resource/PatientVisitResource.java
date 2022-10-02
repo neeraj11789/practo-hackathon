@@ -24,7 +24,7 @@ public class PatientVisitResource {
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     private List<PatientVisit> indexPatients(@RequestBody PatientVisitRequestBody body){
-        System.out.println(body);
-        return patientVisitService.index(body.getFromDatetime(), body.getToDatetime(), true);
+        log.info("RequestBody: {}", body);
+        return patientVisitService.bulkIndex(body.getFromDatetime(), body.getToDatetime(), true);
     }
 }

@@ -43,7 +43,7 @@
 
 ### Preparing Data
 
-1. Creating the index for the required entity. Eg
+1. (Optional) Creating the index for the required entity. Eg
 `PUT /test-00001`
 `
    {
@@ -116,12 +116,30 @@
    }
 `
 2. Make the curl Call for the API to load the date for past one month -
-3. `curl -X POST http://localhost:8051/v1/reports/patient-registration \
+```shell
+   curl -X POST http://localhost:8051/v1/reports/patient-registration \
    -H 'Content-Type: application/json' \
    -d '{
    "from_datetime": "2021-01-01T00:00",
    "to_datetime": "2022-10-08T00:00"
-   }'`
+   }'
+```
+
+
+### RabbitMQ Support
+
+- Install RabbitMQ using - https://www.hackerxone.com/2021/08/24/steps-to-install-rabbitmq-on-ubuntu-20-04/
+- use the new-branch `rabbit-mq` to test the consumer and producer flow
+- the new patient-visit created at the insta-hms should be able to propagate and index in elastic using the following Demo API to send data - 
+
+```shell
+curl -X POST http://localhost:8051/rabbitmq/sender \
+    -H 'Content-Type: application/json' \
+    -d '{
+    "visit_id": "OP121829",
+    "creation_time": "2022-01-01T06:00"
+}'
+```
 
 
 ### References 

@@ -2,6 +2,7 @@ package com.practo.insta.hackaton.reporting.service;
 
 import com.practo.insta.hackaton.reporting.domain.PatientVisit;
 import com.practo.insta.hackaton.reporting.repository.PatientVisitRepository;
+import com.practo.insta.hackaton.reporting.request.PatientVisitEventRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,9 +24,17 @@ public class PatientVisitService {
     @Autowired
     private ElasticSearchService elasticsearchService;
 
-    public List<PatientVisit> index(final LocalDateTime fromDateTime, final LocalDateTime toDateTime, final Boolean updateExistingRecords) {
+    public List<PatientVisit> bulkIndex(final LocalDateTime fromDateTime, final LocalDateTime toDateTime, final Boolean updateExistingRecords) {
         List<PatientVisit> patientRegistrationsForTimeline = repository.getPatientRegistrationsForTimeline(fromDateTime.toLocalDate(), toDateTime.toLocalDate());
         elasticsearchService.bulkIndex(patientRegistrationsForTimeline, patientVisitElasticIndexName);
         return patientRegistrationsForTimeline;
+    }
+
+    public List<PatientVisit> index(final PatientVisitEventRequest eventRequest) {
+        eventRequest.setProcessingTime(LocalDateTime.now());
+        log.info("Processing Event {}", eventRequest);
+        List<PatientVisit> patientRegistrationsForVisit = repository.getPatientRegistrationsVisits(eventRequest.getVisitId());
+        elasticsearchService.bulkIndex(patientRegistrationsForVisit, patientVisitElasticIndexName);
+        return patientRegistrationsForVisit;
     }
 }
