@@ -11,7 +11,6 @@ import com.practo.insta.hackaton.reporting.domain.DiagnosisDetails;
 import com.practo.insta.hackaton.reporting.repository.DiagnosisDetailsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
-import org.apache.tomcat.util.ExceptionUtils;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

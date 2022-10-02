@@ -1,6 +1,6 @@
 package com.practo.insta.hackaton.reporting.repository;
 
-import com.practo.insta.hackaton.reporting.domain.*;
+import com.practo.insta.hackaton.reporting.domain.PatientVisit;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,10 +14,7 @@ import java.util.List;
 @Repository
 public class PatientVisitRepositoryJdbcImpl implements PatientVisitRepository {
 
-    private static String GET_PATIENT_REGISTRATIONS_FOR_WINDOW = "select * from cen.patient_registration " +
-            "where (reg_date between :fromDate  AND :toDate );";
-
-    private static String GET_PATIENT_REGISTRATIONS_FOR_TIMEFRAME = "SELECT pd.mr_no, pd.patient_gender, pd.patient_address,\n" +
+    private static final String GET_PATIENT_REGISTRATIONS_FOR_TIMEFRAME = "SELECT pd.mr_no, pd.patient_gender, pd.patient_address,\n" +
             "\tct.city_name, sm.state_name, pd.patient_phone,\n" +
             "\tcm.country_name,\n" +
             "\tpd.user_name,\n" +
@@ -70,43 +67,43 @@ public class PatientVisitRepositoryJdbcImpl implements PatientVisitRepository {
                 .addValue("toDate", toDate);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         List<PatientVisit> patientDetails = namedParameterJdbcTemplate.query(GET_PATIENT_REGISTRATIONS_FOR_TIMEFRAME, params,
-                (rs, rowNum) -> new PatientVisit(
-                        StringUtils.isNotBlank(rs.getString("patient_id"))? rs.getString("patient_id") : rs.getString("mr_no"), //id
-                        rs.getString("mr_no"),
-                        rs.getString("patient_gender"),
-                        rs.getString("patient_address"),
-                        rs.getString("city_name"),
-                        rs.getString("state_name"),
-                        rs.getString("patient_phone"),
-                        rs.getString("country_name"),
-                        rs.getString("user_name"),
-//                        LocalDateTime.of(rs.getDate("expected_dob"),
-                        rs.getString("patient_area"),
-                        rs.getString("visit_id"),
-                        rs.getString("previous_visit_id"),
-                        rs.getString("casefile_no"),
-                        rs.getString("vip_status"),
-//                        LocalDateTime.of(rs.getDate("first_visit_reg_date"),
-                        rs.getString("reg_date"),
-                        rs.getString("government_identifier"),
-                        rs.getString("patient_id"),
-                        rs.getTimestamp("visit_reg_date").toLocalDateTime(),
-                        rs.getString("status"),
-                        rs.getString("op_type"),
-                        rs.getString("op_type_name"),
-                        rs.getString("visit_type"),
-                        rs.getString("patient_full_name"),
-                        rs.getInt("age"),
-                        rs.getString("age_in"),
-                        rs.getString("doctor_name"),
-                        rs.getString("dept_name"),
-                        rs.getString("doctor"),
-                        rs.getString("complaint"),
-                        rs.getString("bed_type"),
-                        rs.getString("ward_id"),
-                        rs.getString("category_name"),
-                        rs.getString("center_name")
-                ));
+                (rs, rowNum) -> {
+                    PatientVisit patientVisit = new PatientVisit(StringUtils.isNotBlank(rs.getString("patient_id")) ? rs.getString("patient_id") : rs.getString("mr_no"));
+                    patientVisit.setMrNo(rs.getString("mr_no"));
+                    patientVisit.setPatientId(rs.getString("patient_id"));
+                    patientVisit.setVisitId(rs.getString("visit_id"));
+                    patientVisit.setAge(rs.getInt("age"));
+                    patientVisit.setPatientAddress(rs.getString("patient_address"));
+                    patientVisit.setPatientGender(rs.getString("patient_gender"));
+                    patientVisit.setCityName(rs.getString("city_name"));
+                    patientVisit.setStateName(rs.getString("state_name"));
+                    patientVisit.setPatientPhone(rs.getString("patient_phone"));
+                    patientVisit.setCountryName(rs.getString("country_name"));
+                    patientVisit.setUserName(rs.getString("user_name"));
+                    patientVisit.setPatientArea(rs.getString("patient_area"));
+                    patientVisit.setCasefileNo(rs.getString("casefile_no"));
+                    patientVisit.setVisitStatus(rs.getString("vip_status"));
+                    patientVisit.setRegDate(rs.getString("reg_date"));
+                    patientVisit.setGovernmentIdentifier(rs.getString("government_identifier"));
+                    patientVisit.setVisitRegDate(rs.getTimestamp("visit_reg_date").toLocalDateTime());
+                    patientVisit.setStatus(rs.getString("status"));
+                    patientVisit.setOpType(rs.getString("op_type"));
+                    patientVisit.setOpTypeName(rs.getString("op_type_name"));
+                    patientVisit.setVisitType(rs.getString("visit_type"));
+                    patientVisit.setPatientFullName(rs.getString("patient_full_name"));
+                    patientVisit.setAgeIn(rs.getString("age_in"));
+                    patientVisit.setDoctor(rs.getString("doctor"));
+                    patientVisit.setDoctorName(rs.getString("doctor_name"));
+                    patientVisit.setDepartmentName(rs.getString("dept_name"));
+                    patientVisit.setComplaint(rs.getString("complaint"));
+                    patientVisit.setBedType(rs.getString("bed_type"));
+                    patientVisit.setWardId(rs.getString("ward_id"));
+                    patientVisit.setCategoryName(rs.getString("category_name"));
+                    patientVisit.setCenterName(rs.getString("center_name"));
+                    patientVisit.setPreviousVisitId(rs.getString("previous_visit_id"));
+                    return patientVisit;
+                }
+        );
         return patientDetails;
     }
 }

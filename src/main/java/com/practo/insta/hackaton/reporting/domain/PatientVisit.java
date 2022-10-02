@@ -4,18 +4,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.practo.insta.hackaton.reporting.util.LocalDateTimeDeserializer;
 import com.practo.insta.hackaton.reporting.util.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
-@Data
-@AllArgsConstructor
-public class PatientVisit extends BaseDomain{
-
-    protected String id;
+@Setter
+@Getter
+public class PatientVisit extends BaseDomain {
 
     protected String mrNo;
 
@@ -94,4 +91,8 @@ public class PatientVisit extends BaseDomain{
     protected String categoryName;
 
     protected String centerName;
+
+    public PatientVisit(final String id) {
+        super.setId(id);
+    }
 }

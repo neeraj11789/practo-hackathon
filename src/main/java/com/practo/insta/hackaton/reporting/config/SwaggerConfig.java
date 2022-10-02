@@ -28,8 +28,8 @@ public Docket productApi() {
 
     private ApiInfo metaData() {
         ApiInfo apiInfo = new ApiInfo(
-                "Insta Audit Service APIs",
-                "REST APIs for Insta Audit Service built on the Spring Boot",
+                "Insta Reporting Service APIs",
+                "REST APIs for Insta Reporting Service built on the Spring Boot",
                 "1.0",
                 "Terms of service",
                 new Contact("Insta Dev Team", "https://practo.com", "help@practo.com"),

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DiagnosisDetailsRepository {
 
-    public List<DiagnosisDetails> getPatientDiagnosisForTimeline(final LocalDate fromDate, final LocalDate toDate);
+    List<DiagnosisDetails> getPatientDiagnosisForTimeline(final LocalDate fromDate, final LocalDate toDate);
 }

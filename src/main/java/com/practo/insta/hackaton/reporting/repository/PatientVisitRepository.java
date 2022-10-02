@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface PatientVisitRepository {
-    public List<PatientVisit> getPatientRegistrationsForTimeline(final LocalDate fromDate, final LocalDate toDate);
+    List<PatientVisit> getPatientRegistrationsForTimeline(final LocalDate fromDate, final LocalDate toDate);
 }

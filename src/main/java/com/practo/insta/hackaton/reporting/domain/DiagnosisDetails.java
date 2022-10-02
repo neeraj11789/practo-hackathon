@@ -7,8 +7,6 @@ import com.practo.insta.hackaton.reporting.util.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.security.auth.callback.CallbackHandler;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data

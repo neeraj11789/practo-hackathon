@@ -1,22 +1,19 @@
 package com.practo.insta.hackaton.reporting.repository;
 
-import com.google.common.collect.Lists;
-import com.practo.insta.hackaton.reporting.domain.*;
+import com.practo.insta.hackaton.reporting.domain.DiagnosisDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.w3c.dom.ls.LSInput;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class DiagnosisDetailsRepositoryJdbcImpl implements DiagnosisDetailsRepository {
 
-    private static String GET_PATIENT_DIAGNOSIS_DETAILS_FOR_WINDOW = "select pr.mr_no, md.visit_id, md.description, md.icd_code, md.code_type, md.doctor_id, d.doctor_name, md.diagnosis_datetime, pd.patient_gender, pd.patient_name, c.city_name, sm.state_name, d.dept_id, d.specialization, dp.dept_name, hcm.center_name, pr.center_id, pr.visit_type\n" +
+    private static final String GET_PATIENT_DIAGNOSIS_DETAILS_FOR_WINDOW = "select pr.mr_no, md.visit_id, md.description, md.icd_code, md.code_type, md.doctor_id, d.doctor_name, md.diagnosis_datetime, pd.patient_gender, pd.patient_name, c.city_name, sm.state_name, d.dept_id, d.specialization, dp.dept_name, hcm.center_name, pr.center_id, pr.visit_type\n" +
             "from mrd_diagnosis md\n" +
             "left join doctors d on (md.doctor_id=d.doctor_id)\n" +
             "left join patient_registration pr on (md.visit_id=pr.patient_id)\n" +
